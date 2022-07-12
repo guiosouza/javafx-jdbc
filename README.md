@@ -1,1 +1,1 @@
-## JavaFX para aplicação desktop usando banco de dados com MySQL e JDBC
+## Aplicação desktop usando JavaFX, banco de dados MySQL e JDBC
