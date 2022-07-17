@@ -31,4 +31,31 @@ O projeto é um sistema CRUD com interface gráfica para cuidar de registros de 
 
 # Dificuldades
 
-O maior dificuldade nesse projeto são o uso de expressões lambdas
+A maior dificuldade nesse projeto foi achar uma maneira de não precisar ficar criando várias funções para o carregamento das telas. Veja:
+
+- Na classe `MainViewController` no pacote gui, temos a função `private synchronized <T> void loadView(String absoluteName, Consumer<T> initializingAction)`. Repare que ela recebeu uma função como parâmetro.
+- Antes a função era assim: `private synchronized void loadView(String absoluteName)`.
+- A atualização dessa função era necessária para não termos que ficar criando vários tipos de "loadviews" que mudavam algumas poucas coisas de uma função para outra.
+- A solução foi utilizar conceitos de expressão lambda para chamarmos funções dentro de parâmetros passados.
+
+Veja que as duas linhas da função loadView abaixo:
+
+```sh
+			T controller = loader.getController();
+			initializingAction.accept(controller);
+
+```
+
+**Vão executar a função que eu passar como parâmetro aqui:**
+
+```sh
+  @FXML
+	public void onMenuItemSellerAction() {
+		loadView("/gui/SellerList.fxml", (SellerListController controller) -> {
+			controller.setSellerService(new SellerService());
+			controller.updateTableView();
+		});
+	}
+```
+
+
